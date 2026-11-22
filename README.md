@@ -11,6 +11,6 @@ Aplicație web live pentru exercițiul **Diagrama afinității**, destinată stu
 3. **Grupare împreună** – toată echipa grupează bilețelele în categorii și le denumește, în timp real.
 4. **Rezultat** – diagrama finală, export CSV (Excel).
 
-Studiul de caz implicit: *Creșterea siguranței pacientului într-un spital județean de urgență* (evenimente adverse, pregătire pentru reacreditarea ANMCS) – poate fi modificat la crearea sesiunii.
+Studiul de caz implicit: *Investigarea unui caz de malpraxis – compresă chirurgicală uitată în abdomenul pacientului după o operație de urgență* – poate fi modificat la crearea sesiunii.
 
 Datele sunt stocate în Firebase Realtime Database, sub `afinitate-sanitar/`, separat de aplicația pentru SMC.

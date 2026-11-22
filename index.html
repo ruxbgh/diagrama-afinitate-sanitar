@@ -247,8 +247,8 @@ const COLORS = ['#0d9488', '#0284c7', '#e11d48', '#f59e0b', '#7c3aed', '#16a34a'
 const NOTE_COLORS = [['#fff3a3', '#f2d94a'], ['#ffd1e8', '#f59ac8'], ['#c9f7e1', '#7fdcb4'], ['#cfe8ff', '#8cc4f7'], ['#ffdcc2', '#f7ab78'], ['#d4f3ec', '#7fd3c6']];
 const noteColor = by => { let h = 0; for (const ch of String(by || '')) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return NOTE_COLORS[h % NOTE_COLORS.length]; };
 const PHASES = [['pregatire', 'Pregătire'], ['idei', 'Scriere individuală'], ['grupare', 'Grupare împreună'], ['final', 'Rezultat']];
-const PRESET_TOPIC = 'Creșterea siguranței pacientului într-un spital județean de urgență';
-const PRESET_DESC = 'Sunteți membri ai Structurii de management al calității serviciilor de sănătate dintr-un spital județean de urgență. Raportările din ultimul an arată o creștere a evenimentelor adverse asociate asistenței medicale: căderi ale pacienților, erori de medicație, infecții asociate asistenței medicale și întârzieri la triajul din UPU. Spitalul se pregătește pentru reacreditarea ANMCS.\nNotați toate cauzele posibile ale acestor probleme – câte o cauză pe bilețel (oameni, proceduri, echipamente, comunicare, organizare, mediu). Fiecare scrie cel puțin o idee.';
+const PRESET_TOPIC = 'Investigarea unui caz de malpraxis: compresă chirurgicală uitată în abdomenul pacientului';
+const PRESET_DESC = 'Sunteți membri ai Structurii de management al calității dintr-un spital județean de urgență. Un pacient de 54 de ani a fost operat de urgență, într-o noapte de sâmbătă, pentru o ocluzie intestinală. La trei săptămâni după externare revine cu dureri abdominale și febră, iar tomografia arată o compresă chirurgicală uitată în abdomen. Pacientul este reoperat. Familia a depus plângere la Colegiul Medicilor și a deschis o acțiune în instanță pentru malpraxis.\nDin analiza preliminară: intervenția a început la ora 2:30, echipa de gardă era incompletă, asistenta instrumentară s-a schimbat în timpul operației, iar Lista de verificare a siguranței chirurgicale nu a fost completată integral.\nNotați toate cauzele posibile care au dus la acest eveniment – câte o cauză pe bilețel (oameni, proceduri, echipamente, comunicare, organizare, mediu). Fiecare scrie cel puțin o idee.';
 const BOARD = 't1';
 
 const store = createStore('afinitate-sanitar');
@@ -354,7 +354,7 @@ function bindNoteActions(root) {
 }
 
 function composeHTML() {
-  return `<form id="cf" class="compose"><div style="flex:1"><label for="newIdea">Ideea ta</label><textarea id="newIdea" maxlength="140" placeholder="ex. Personal insuficient pe tura de noapte în secția ATI"></textarea></div><button class="primary" style="height:52px">Adaugă</button></form>
+  return `<form id="cf" class="compose"><div style="flex:1"><label for="newIdea">Ideea ta</label><textarea id="newIdea" maxlength="140" placeholder="ex. Compresele nu au fost renumărate la schimbarea asistentei instrumentare"></textarea></div><button class="primary" style="height:52px">Adaugă</button></form>
     <p class="small muted" style="margin:6px 0 0">Enter = trimite · Shift+Enter = rând nou · câte o idee pe bilețel</p>`;
 }
 function bindCompose() {
