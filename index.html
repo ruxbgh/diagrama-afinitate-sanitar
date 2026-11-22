@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagrama Afinității — MC în Sistemul Sanitar</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F0FDFA;
+  --bg2: #E6FFFA;
+  --card-bg: #FFFFFF;
+  --text: #2D2A26;
+  --text2: #6B6560;
+  --text3: #A09A93;
+  --accent: #0D9488;
+  --accent2: #0F766E;
+  --accent-light: #CCFBF1;
+  --green: #4CAF82;
+  --green-light: #E8F5EE;
+  --blue: #4A90D9;
+  --blue-light: #EBF3FC;
+  --purple: #8B6CC1;
+  --purple-light: #F0ECF7;
+  --rose: #D4648A;
+  --rose-light: #FCEEF3;
+  --amber: #D49B3A;
+  --amber-light: #FDF5E6;
+  --teal: #3BA3A1;
+  --teal-light: #E6F5F5;
+  --border: #B2DFDB;
+  --shadow: 0 2px 12px rgba(45,42,38,0.06);
+  --shadow-lg: 0 8px 32px rgba(45,42,38,0.1);
+  --radius: 14px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+h1,h2,h3 { font-family:'Playfair Display',serif; }
+
+/* Screens */
+.screen { display:none; min-height:100vh; }
+.screen.active { display:flex; flex-direction:column; }
+
+/* ===== LANDING ===== */
+.landing { align-items:center; justify-content:center; padding:40px 20px;
+  background: linear-gradient(160deg, #F0FDFA 0%, #CCFBF1 30%, #E0F2FE 60%, #F0FDF4 100%); }
+.landing-card { text-align:center; max-width:480px; width:100%; }
+.landing-logo { font-size:56px; margin-bottom:20px; display:block; }
+.landing h1 { font-size:clamp(28px,5vw,42px); color:var(--text); margin-bottom:8px; line-height:1.2; }
+.landing .subtitle { color:var(--text2); font-size:15px; margin-bottom:40px; line-height:1.6; }
+.role-buttons { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.role-btn { flex:1; min-width:180px; max-width:220px; padding:28px 20px; border-radius:var(--radius);
+  border:2px solid var(--border); background:var(--card-bg); cursor:pointer; transition:all .25s;
+  text-align:center; }
+.role-btn:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:var(--shadow-lg); }
+.role-btn .icon { font-size:36px; margin-bottom:10px; display:block; }
+.role-btn .label { font-size:17px; font-weight:800; }
+.role-btn .desc { font-size:12px; color:var(--text2); margin-top:6px; line-height:1.4; }
+.role-btn.prof .label { color:var(--accent); }
+.role-btn.stu .label { color:var(--blue); }
+
+/* ===== PROFESSOR PASSWORD ===== */
+.password-screen { align-items:center; justify-content:center; padding:40px 20px;
+  background:linear-gradient(160deg, #F0FDFA, #CCFBF1); }
+.pw-box { background:var(--card-bg); border-radius:var(--radius); padding:40px; max-width:380px; width:100%;
+  box-shadow:var(--shadow-lg); text-align:center; }
+.pw-box h2 { font-size:24px; margin-bottom:6px; }
+.pw-box .hint { color:var(--text2); font-size:13px; margin-bottom:24px; }
+.pw-input { width:100%; padding:14px 16px; border-radius:10px; border:2px solid var(--border);
+  font-size:18px; text-align:center; letter-spacing:8px; font-family:inherit; font-weight:700;
+  outline:none; transition:border .2s; }
+.pw-input:focus { border-color:var(--accent); }
+.pw-error { color:#D44; font-size:12px; margin-top:8px; min-height:18px; }
+.pw-submit { width:100%; margin-top:16px; padding:14px; border-radius:10px; border:none;
+  background:var(--accent); color:white; font-size:16px; font-weight:700; cursor:pointer;
+  font-family:inherit; transition:background .2s; }
+.pw-submit:hover { background:var(--accent2); }
+
+/* ===== STUDENT SELECT ===== */
+.student-select { align-items:center; justify-content:center; padding:40px 20px;
+  background:linear-gradient(160deg, #F0FDFA, #E0F2FE); }
+.stu-box { max-width:440px; width:100%; text-align:center; }
+.stu-box h2 { font-size:24px; margin-bottom:6px; }
+.stu-box .hint { color:var(--text2); font-size:13px; margin-bottom:24px; }
+.stu-list { display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; }
+.stu-list-item { padding:14px 18px; border-radius:12px; border:2px solid var(--border);
+  background:var(--card-bg); cursor:pointer; display:flex; align-items:center; gap:12px;
+  font-size:15px; font-weight:600; transition:all .2s; text-align:left; }
+.stu-list-item:hover { border-color:var(--blue); background:var(--blue-light); }
+.stu-avatar { width:36px; height:36px; border-radius:10px; display:flex; align-items:center;
+  justify-content:center; color:white; font-weight:800; font-size:15px; flex-shrink:0; }
+.waiting-msg { background:var(--card-bg); border-radius:var(--radius); padding:32px;
+  box-shadow:var(--shadow); }
+.waiting-msg .icon { font-size:40px; margin-bottom:10px; }
+.back-btn { margin-top:20px; background:none; border:none; color:var(--text2); cursor:pointer;
+  font-size:13px; text-decoration:underline; font-family:inherit; }
+
+/* ===== COMMON HEADER ===== */
+.app-header { background:rgba(240,253,250,0.92); backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--border); padding:10px 20px;
+  position:sticky; top:0; z-index:100; }
+.header-inner { max-width:1300px; margin:0 auto; display:flex; align-items:center;
+  justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.header-brand { display:flex; align-items:center; gap:10px; }
+.header-brand .logo { font-size:24px; }
+.header-brand .title { font-size:16px; font-weight:800; color:var(--accent); }
+.header-brand .theme-text { font-size:11px; color:var(--text2); max-width:220px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Phase bar */
+.phase-bar { display:flex; gap:3px; align-items:center; }
+.phase-pill { padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+.phase-pill.current { background:var(--accent); color:white; }
+.phase-pill.done { background:var(--accent-light); color:var(--accent); }
+.phase-pill.future { background:rgba(0,0,0,0.04); color:var(--text3); }
+.phase-connector { width:14px; height:2px; border-radius:1px; }
+.phase-connector.done { background:var(--accent); }
+.phase-connector.future { background:var(--border); }
+
+/* Timer */
+.timer-box { display:flex; align-items:center; gap:8px; padding:6px 14px; border-radius:12px;
+  border:2px solid var(--border); background:var(--card-bg); }
+.timer-box.warning { border-color:#EF4444; background:#FEF2F2; }
+.timer-box.warning .timer-digits { color:#EF4444; }
+.timer-digits { font-size:20px; font-weight:900; font-variant-numeric:tabular-nums; color:var(--accent); }
+.timer-bar { width:60px; height:5px; border-radius:3px; background:var(--border); overflow:hidden; }
+.timer-bar-fill { height:100%; border-radius:3px; background:var(--accent); transition:width 1s linear; }
+.timer-box.warning .timer-bar-fill { background:#EF4444; }
+.timer-toggle { background:none; border:none; cursor:pointer; font-size:14px; color:var(--text2); }
+
+.app-body { max-width:1300px; margin:0 auto; padding:24px 16px; }
+
+/* ===== PROFESSOR SETUP ===== */
+.setup-wrap { max-width:600px; margin:20px auto; }
+.setup-section { background:var(--card-bg); border-radius:var(--radius); border:2px solid var(--border);
+  padding:24px; margin-bottom:16px; box-shadow:var(--shadow); }
+.setup-label { font-size:11px; font-weight:800; color:var(--accent); text-transform:uppercase;
+  letter-spacing:1.5px; margin-bottom:10px; }
+.setup-textarea { width:100%; padding:14px; border-radius:10px; border:2px solid var(--border);
+  font-size:15px; color:var(--text); resize:vertical; outline:none; font-family:inherit;
+  line-height:1.5; transition:border .2s; }
+.setup-textarea:focus { border-color:var(--accent); }
+.add-row { display:flex; gap:8px; }
+.add-input { flex:1; padding:10px 14px; border-radius:10px; border:2px solid var(--border);
+  font-size:14px; color:var(--text); outline:none; font-family:inherit; }
+.add-input:focus { border-color:var(--accent); }
+.add-btn { padding:10px 18px; border-radius:10px; border:none; background:var(--accent);
+  color:white; font-weight:800; cursor:pointer; font-size:14px; font-family:inherit; }
+.student-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.student-chip { display:flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px;
+  font-size:13px; font-weight:700; }
+.student-chip .remove { background:none; border:none; cursor:pointer; opacity:0.5; font-size:13px; padding:0; }
+.start-btn { width:100%; padding:16px; border-radius:var(--radius); border:none; font-size:17px;
+  font-weight:800; cursor:pointer; font-family:inherit; transition:all .3s; color:white; }
+.start-btn.ready { background:var(--accent); box-shadow:0 4px 20px rgba(13,148,136,0.3); }
+.start-btn.disabled { background:#D1D5DB; cursor:default; }
+
+/* ===== BRAINSTORMING (Student) ===== */
+.bs-theme { background:var(--card-bg); border-radius:var(--radius); padding:16px 20px;
+  margin-bottom:20px; border:2px solid var(--border); text-align:center; box-shadow:var(--shadow); }
+.bs-theme .label { font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2px; }
+.bs-theme .text { font-size:17px; font-weight:700; margin-top:4px; }
+.bs-input-row { display:flex; gap:8px; margin-bottom:16px; max-width:600px; margin-left:auto; margin-right:auto; }
+.bs-input { flex:1; padding:14px 16px; border-radius:var(--radius); border:2px solid var(--border);
+  font-size:15px; font-weight:500; color:var(--text); outline:none; font-family:inherit; }
+.bs-input:focus { border-color:var(--accent); }
+.bs-add-btn { padding:14px 22px; border-radius:var(--radius); border:none; color:white;
+  font-weight:900; cursor:pointer; font-size:18px; transition:all .2s; }
+.bs-counter { text-align:center; font-size:13px; color:var(--text2); margin-bottom:16px; }
+.bs-cards { display:flex; flex-direction:column; gap:8px; max-width:600px; margin:0 auto; }
+.bs-card { display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:12px;
+  border:2px solid; animation:slideIn .3s ease; }
+.bs-card .text { flex:1; font-size:14px; font-weight:600; }
+.bs-card .remove { background:none; border:none; cursor:pointer; opacity:0.4; font-size:16px; padding:2px; }
+@keyframes slideIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+
+/* ===== PROFESSOR MONITOR ===== */
+.monitor-stats { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; justify-content:center; }
+.monitor-stat { padding:6px 14px; border-radius:20px; font-size:12px; font-weight:700; }
+.monitor-grid { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; min-height:200px;
+  padding:20px; background:rgba(255,255,255,0.6); border-radius:20px;
+  border:2px dashed var(--border); }
+.monitor-card { width:175px; min-height:85px; padding:12px; border-radius:12px; border:2px solid;
+  display:flex; flex-direction:column; justify-content:space-between;
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1); }
+.monitor-card .card-text { font-size:13px; font-weight:600; line-height:1.4; }
+.monitor-card .card-author { font-size:10px; opacity:0.55; margin-top:6px; }
+@keyframes popIn { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+
+/* ===== STUDENT WAITING ===== */
+.stu-waiting { text-align:center; padding:60px 20px; }
+.stu-waiting .icon { font-size:56px; margin-bottom:16px; }
+.stu-waiting h2 { font-size:22px; margin-bottom:8px; }
+.stu-waiting p { color:var(--text2); font-size:14px; }
+
+/* ===== GROUPING BOARD ===== */
+.board-toolbar { background:var(--card-bg); border-radius:var(--radius); padding:14px 18px;
+  margin-bottom:16px; border:2px solid var(--border); display:flex;
+  justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.board-toolbar h3 { font-size:16px; }
+.board-toolbar .hint { font-size:12px; color:var(--text2); }
+.toolbar-btn { padding:8px 16px; border-radius:10px; border:2px solid var(--border);
+  background:var(--card-bg); color:var(--accent); font-weight:700; cursor:pointer;
+  font-size:13px; font-family:inherit; transition:all .2s; }
+.toolbar-btn:hover { border-color:var(--accent); background:var(--accent-light); }
+
+.groups-container { display:flex; flex-direction:column; gap:14px; }
+.group-box { background:var(--card-bg); border-radius:var(--radius); border:2px solid var(--border);
+  padding:16px; min-height:80px; transition:all .2s; }
+.group-box.drag-over { border-color:var(--accent); background:var(--accent-light); }
+.group-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.group-name-input { flex:1; padding:6px 10px; border-radius:8px; border:2px solid var(--border);
+  font-size:14px; font-weight:700; color:var(--text); outline:none; font-family:inherit; }
+.group-name-input:focus { border-color:var(--accent); }
+.group-count { font-size:12px; color:var(--text3); font-weight:600; }
+.group-delete { background:none; border:none; cursor:pointer; font-size:16px; color:var(--text3); }
+.group-cards { display:flex; flex-wrap:wrap; gap:8px; }
+.group-card { width:165px; padding:10px; border-radius:10px; border:2px solid; cursor:grab;
+  user-select:none; transition:box-shadow .2s; }
+.group-card:active { cursor:grabbing; }
+.group-card .text { font-size:12px; font-weight:600; line-height:1.4; }
+.group-card .author { font-size:10px; opacity:0.5; margin-top:4px; }
+.group-empty { color:var(--text3); font-size:12px; padding:8px; font-style:italic; }
+.ungrouped-label { font-size:14px; font-weight:700; color:var(--text2); }
+
+/* ===== RESULTS ===== */
+.results-header { text-align:center; margin-bottom:32px; }
+.results-header h2 { font-size:clamp(24px,4vw,32px); color:var(--text); margin-bottom:6px; }
+.results-header p { color:var(--text2); font-size:14px; }
+.results-stats { display:flex; gap:12px; justify-content:center; margin-bottom:28px; flex-wrap:wrap; }
+.stat-card { background:var(--card-bg); border-radius:16px; padding:16px 32px; text-align:center;
+  min-width:120px; box-shadow:var(--shadow); }
+.stat-card .num { font-size:32px; font-weight:900; }
+.stat-card .label { font-size:12px; color:var(--text2); font-weight:600; margin-top:2px; }
+.results-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px; margin-bottom:28px; }
+.result-group { border-radius:16px; padding:18px; border:2px solid; }
+.result-group .name { font-size:15px; font-weight:900; margin-bottom:12px; }
+.result-group .items { display:flex; flex-direction:column; gap:6px; }
+.result-item { padding:8px 10px; border-radius:10px; border:1.5px solid; font-size:12px;
+  font-weight:600; line-height:1.4; }
+.result-item .auth { opacity:0.4; font-size:10px; margin-left:4px; }
+.result-group .count { font-size:11px; margin-top:10px; font-weight:600; }
+
+.contributions { background:var(--card-bg); border-radius:16px; border:2px solid var(--border);
+  padding:20px; margin-bottom:24px; box-shadow:var(--shadow); }
+.contributions .title { font-size:11px; font-weight:800; color:var(--accent); text-transform:uppercase;
+  letter-spacing:1.5px; margin-bottom:14px; }
+.contrib-grid { display:flex; flex-wrap:wrap; gap:14px; }
+.contrib-item { flex:1 1 140px; min-width:110px; }
+.contrib-row { display:flex; justify-content:space-between; margin-bottom:4px; }
+.contrib-name { font-size:12px; font-weight:700; padding:1px 6px; border-radius:6px; }
+.contrib-count { font-size:11px; color:var(--text3); font-weight:600; }
+.contrib-bar { width:100%; height:6px; border-radius:3px; background:var(--bg2); }
+.contrib-bar-fill { height:100%; border-radius:3px; transition:width .5s; }
+
+.action-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.primary-btn { padding:14px 28px; border-radius:var(--radius); border:none; background:var(--accent);
+  color:white; font-weight:800; font-size:15px; cursor:pointer; font-family:inherit;
+  box-shadow:0 4px 20px rgba(13,148,136,0.3); transition:background .2s; }
+.primary-btn:hover { background:var(--accent2); }
+.secondary-btn { padding:14px 28px; border-radius:var(--radius); border:2px solid var(--border);
+  background:var(--card-bg); color:var(--accent); font-weight:800; font-size:15px;
+  cursor:pointer; font-family:inherit; transition:all .2s; }
+.secondary-btn:hover { border-color:var(--accent); }
+.next-phase-btn { display:block; margin:24px auto 0; padding:14px 36px; border-radius:var(--radius);
+  border:none; background:var(--accent); color:white; font-weight:800; font-size:16px;
+  cursor:pointer; font-family:inherit; box-shadow:0 4px 20px rgba(13,148,136,0.3); }
+.next-phase-btn:disabled { background:#D1D5DB; box-shadow:none; cursor:default; }
+
+.ungrouped-warning { background:#FEF2F2; border-radius:var(--radius); border:2px solid #FECACA;
+  padding:14px; margin-bottom:16px; font-size:13px; color:#DC2626; font-weight:600; text-align:center; }
+.ungrouped-warning button { background:none; border:none; color:var(--accent); cursor:pointer;
+  text-decoration:underline; font-size:13px; font-weight:700; font-family:inherit; }
+
+@media(max-width:600px) {
+  .phase-bar { display:none; }
+  .header-inner { justify-content:center; }
+  .monitor-card { width:calc(50% - 8px); }
+  .group-card { width:calc(50% - 8px); }
+}
+
+/* Animations */
+@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.fade-in { animation:fadeIn .4s ease; }
+</style>
+</head>
+<body>
+
+<!-- ==================== LANDING ==================== -->
+<div id="screen-landing" class="screen active landing">
+  <div class="landing-card fade-in">
+    <span class="landing-logo">⚕️</span>
+    <h1>Diagrama Afinității</h1>
+    <p class="subtitle">Managementul Calității în Sistemul Sanitar<br>Studiu de caz interactiv — Masterat</p>
+    <div class="role-buttons">
+      <button class="role-btn prof" onclick="showScreen('screen-password')">
+        <span class="icon">👨‍🏫</span>
+        <div class="label">Profesor</div>
+        <div class="desc">Configurează, monitorizează și coordonează sesiunea</div>
+      </button>
+      <button class="role-btn stu" onclick="showScreen('screen-student-select')">
+        <span class="icon">🎓</span>
+        <div class="label">Student</div>
+        <div class="desc">Intră cu numele tău, adaugă idei și participă la grupare</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PASSWORD ==================== -->
+<div id="screen-password" class="screen password-screen">
+  <div class="pw-box fade-in">
+    <h2>Acces Profesor</h2>
+    <p class="hint">Introduceți parola de acces</p>
+    <input type="password" id="pw-input" class="pw-input" maxlength="10" placeholder="····"
+      onkeydown="if(event.key==='Enter')checkPassword()">
+    <div id="pw-error" class="pw-error"></div>
+    <button class="pw-submit" onclick="checkPassword()">Intră →</button>
+    <button class="back-btn" onclick="showScreen('screen-landing')">← Înapoi</button>
+  </div>
+</div>
+
+<!-- ==================== STUDENT SELECT ==================== -->
+<div id="screen-student-select" class="screen student-select">
+  <div class="stu-box fade-in">
+    <h2>🎓 Selectează-ți numele</h2>
+    <p class="hint">Alege numele tău din lista configurată de profesor</p>
+    <div id="stu-list-container"></div>
+    <button class="back-btn" onclick="showScreen('screen-landing')">← Înapoi</button>
+  </div>
+</div>
+
+<!-- ==================== PROFESSOR APP ==================== -->
+<div id="screen-professor" class="screen">
+  <div class="app-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="logo">⚕️</span>
+        <div>
+          <div class="title">Diagrama Afinității</div>
+          <div class="theme-text" id="prof-theme-display"></div>
+        </div>
+      </div>
+      <div class="phase-bar" id="prof-phase-bar"></div>
+      <div id="prof-timer-container"></div>
+    </div>
+  </div>
+  <div class="app-body" id="prof-body"></div>
+</div>
+
+<!-- ==================== STUDENT APP ==================== -->
+<div id="screen-student" class="screen">
+  <div class="app-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="logo">⚕️</span>
+        <div>
+          <div class="title" id="stu-header-name"></div>
+          <div class="theme-text" id="stu-phase-display"></div>
+        </div>
+      </div>
+      <div class="phase-bar" id="stu-phase-bar"></div>
+      <div id="stu-timer-container"></div>
+    </div>
+  </div>
+  <div class="app-body" id="stu-body"></div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+// ============================================================
+//  CONFIG (declared first to avoid hoisting issues)
+// ============================================================
+var PROFESSOR_PASSWORD = "1467";
+var PHASES = [
+  {id:0, name:"Configurare", icon:"⚙️", duration:0},
+  {id:1, name:"Brainstorming", icon:"💡", duration:15*60},
+  {id:2, name:"Grupare", icon:"🗂️", duration:25*60},
+  {id:3, name:"Denumire", icon:"🏷️", duration:15*60},
+  {id:4, name:"Rezultate", icon:"📊", duration:0},
+];
+
+var COLORS = [
+  {bg:"#FEF9C3",border:"#EAB308",text:"#713F12"},
+  {bg:"#DBEAFE",border:"#3B82F6",text:"#1E3A5A"},
+  {bg:"#D1FAE5",border:"#10B981",text:"#065F46"},
+  {bg:"#FEE2E2",border:"#EF4444",text:"#991B1B"},
+  {bg:"#EDE9FE",border:"#8B5CF6",text:"#5B21B6"},
+  {bg:"#FCE7F3",border:"#EC4899",text:"#9D174D"},
+  {bg:"#FFEDD5",border:"#F97316",text:"#9A3412"},
+  {bg:"#CFFAFE",border:"#06B6D4",text:"#155E75"},
+  {bg:"#F0FDF4",border:"#22C55E",text:"#166534"},
+  {bg:"#FFF1F2",border:"#F43F5E",text:"#9F1239"},
+  {bg:"#FEF3C7",border:"#D97706",text:"#78350F"},
+  {bg:"#E0E7FF",border:"#6366F1",text:"#3730A3"},
+  {bg:"#ECFDF5",border:"#34D399",text:"#064E3B"},
+  {bg:"#FDF2F8",border:"#F472B6",text:"#831843"},
+  {bg:"#FFF7ED",border:"#FB923C",text:"#7C2D12"},
+  {bg:"#F0F9FF",border:"#38BDF8",text:"#0C4A6E"},
+  {bg:"#FEFCE8",border:"#FACC15",text:"#854D0E"},
+  {bg:"#FAF5FF",border:"#A855F7",text:"#6B21A8"},
+  {bg:"#F7FEE7",border:"#84CC16",text:"#3F6212"},
+  {bg:"#FFF5F5",border:"#FB7185",text:"#881337"},
+];
+
+var GROUP_HUES = [15, 210, 150, 270, 340, 180, 50, 300, 120, 30];
+
+// ============================================================
+//  FIREBASE CONFIG — REPLACE WITH YOUR OWN
+// ============================================================
+// 1. Go to https://console.firebase.google.com
+// 2. Create project → Realtime Database → Start in TEST mode
+// 3. Copy your config below
+var firebaseConfig = {
+  apiKey: "AIzaSyA5tekq6Gl2JgE8tvthIUcDknK3WV-W_W8",
+  authDomain: "diagrama-afinitatii.firebaseapp.com",
+  databaseURL: "https://diagrama-afinitatii-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "diagrama-afinitatii",
+  storageBucket: "diagrama-afinitatii.firebasestorage.app",
+  messagingSenderId: "131739517669",
+  appId: "1:131739517669:web:24c71cc199540a04138a0c"
+};
+
+var db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+} catch(e) {
+  console.warn("Firebase not available:", e.message);
+}
+
+// ============================================================
+//  STATE
+// ============================================================
+var role = null; // 'professor' | 'student'
+var currentStudent = null;
+var localTimerInterval = null;
+var localTimer = 0;
+var localTimerRunning = false;
+
+// ============================================================
+//  UTILITIES
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'screen-student-select') pollStudentList();
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec/60), s = sec%60;
+  return m.toString().padStart(2,'0')+':'+s.toString().padStart(2,'0');
+}
+
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+// ============================================================
+//  PASSWORD
+// ============================================================
+function checkPassword() {
+  if (!db) { alert('Firebase nu este configurat. Completați firebaseConfig în index.html.'); return; }
+  var val = document.getElementById('pw-input').value;
+  if (val === PROFESSOR_PASSWORD) {
+    role = 'professor';
+    showScreen('screen-professor');
+    initProfessor();
+  } else {
+    document.getElementById('pw-error').textContent = 'Parolă incorectă';
+  }
+}
+
+// ============================================================
+//  STUDENT LIST (for student-select screen)
+// ============================================================
+var stuPollInterval = null;
+function pollStudentList() {
+  if (!db) {
+    document.getElementById('stu-list-container').innerHTML = '<div class="waiting-msg"><div class="icon">⚠️</div><div style="color:var(--text2);font-size:14px">Firebase nu este configurat.<br>Contactați profesorul.</div></div>';
+    return;
+  }
+  clearInterval(stuPollInterval);
+  renderStudentList();
+  db.ref('session-sanitar/students').on('value', renderStudentList);
+}
+
+function renderStudentList(snap) {
+  var container = document.getElementById('stu-list-container');
+  var students = [];
+  if (snap && snap.val()) {
+    students = Object.values(snap.val());
+  }
+  if (students.length === 0) {
+    container.innerHTML = `<div class="waiting-msg"><div class="icon">⏳</div>
+      <div style="color:var(--text2);font-size:14px">Profesorul nu a configurat încă sesiunea.</div>
+      <div style="color:var(--text3);font-size:12px;margin-top:6px">Lista se actualizează automat...</div></div>`;
+    return;
+  }
+  container.innerHTML = '<div class="stu-list">' + students.map(s =>
+    `<button class="stu-list-item" onclick='joinAsStudent(${JSON.stringify(s)})'>
+      <div class="stu-avatar" style="background:${s.color.border}">${s.name.charAt(0).toUpperCase()}</div>
+      <span>${s.name}</span>
+    </button>`
+  ).join('') + '</div>';
+}
+
+function joinAsStudent(s) {
+  role = 'student';
+  currentStudent = s;
+  showScreen('screen-student');
+  initStudent();
+}
+
+// ============================================================
+//  PHASE BAR RENDER
+// ============================================================
+function renderPhaseBar(containerId, currentPhase) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = PHASES.map((p,i) => {
+    const cls = currentPhase === p.id ? 'current' : currentPhase > p.id ? 'done' : 'future';
+    let html = `<span class="phase-pill ${cls}">${p.icon} ${p.name}</span>`;
+    if (i < PHASES.length-1) {
+      html += `<span class="phase-connector ${currentPhase > p.id ? 'done' : 'future'}"></span>`;
+    }
+    return html;
+  }).join('');
+}
+
+// ============================================================
+//  TIMER
+// ============================================================
+function startLocalTimer(duration, containerId) {
+  clearInterval(localTimerInterval);
+  localTimer = duration;
+  localTimerRunning = true;
+  renderTimer(containerId, duration);
+  localTimerInterval = setInterval(() => {
+    if (!localTimerRunning) return;
+    localTimer--;
+    renderTimer(containerId, PHASES.find(p=>p.duration===duration)?.duration || duration);
+    if (localTimer <= 0) { clearInterval(localTimerInterval); localTimerRunning = false; }
+  }, 1000);
+}
+
+function renderTimer(containerId, totalDuration) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (localTimer <= 0 && !localTimerRunning) { el.innerHTML = ''; return; }
+  const warn = localTimer < 60;
+  const pct = totalDuration > 0 ? ((totalDuration - localTimer)/totalDuration)*100 : 0;
+  el.innerHTML = `<div class="timer-box ${warn?'warning':''}">
+    <span class="timer-digits">${formatTime(localTimer)}</span>
+    <div class="timer-bar"><div class="timer-bar-fill" style="width:${pct}%"></div></div>
+    <button class="timer-toggle" onclick="toggleTimer()">${localTimerRunning ? '⏸' : '▶'}</button>
+  </div>`;
+}
+
+function toggleTimer() {
+  localTimerRunning = !localTimerRunning;
+}
+
+// ============================================================
+//  PROFESSOR
+// ============================================================
+function initProfessor() {
+  db.ref('session-sanitar').on('value', snap => {
+    const data = snap.val() || {};
+    renderProfessor(data);
+  });
+}
+
+function renderProfessor(data) {
+  const phase = data.phase || 0;
+  const theme = data.theme || '';
+  const students = data.students ? Object.values(data.students) : [];
+  const cards = data.cards ? Object.values(data.cards) : [];
+  const groups = data.groups ? Object.values(data.groups) : [];
+
+  document.getElementById('prof-theme-display').textContent = theme;
+  renderPhaseBar('prof-phase-bar', phase);
+
+  const body = document.getElementById('prof-body');
+
+  if (phase === 0) {
+    renderProfSetup(body, students);
+  } else if (phase === 1) {
+    renderProfMonitor(body, theme, students, cards);
+  } else if (phase === 2) {
+    renderProfGrouping(body, cards, groups);
+  } else if (phase === 3) {
+    renderProfNaming(body, cards, groups);
+  } else if (phase === 4) {
+    renderResults(body, theme, students, cards, groups);
+  }
+}
+
+// --- SETUP ---
+function renderProfSetup(body, students) {
+  body.innerHTML = `<div class="setup-wrap fade-in">
+    <div style="text-align:center;margin-bottom:30px">
+      <h1 style="font-size:32px;margin-bottom:6px">Configurare sesiune</h1>
+      <p style="color:var(--text2);font-size:14px">Introduceți tema și adăugați participanții</p>
+    </div>
+    <div class="setup-section">
+      <div class="setup-label">Tema de lucru</div>
+      <textarea class="setup-textarea" id="prof-theme-input" rows="3"
+        placeholder="Ex: Cauze ale evenimentelor adverse raportate în spital în ultimul an..."
+        oninput="this.dataset.dirty='1'">${''}</textarea>
+    </div>
+    <div class="setup-section">
+      <div class="setup-label">Participanți (${students.length}/20)</div>
+      <div class="add-row">
+        <input class="add-input" id="prof-add-student" placeholder="Nume student..."
+          onkeydown="if(event.key==='Enter')profAddStudent()">
+        <button class="add-btn" onclick="profAddStudent()">+ Adaugă</button>
+      </div>
+      <div class="student-chips" id="prof-student-chips">
+        ${students.map(s => `<div class="student-chip" style="background:${s.color.bg};border:2px solid ${s.color.border};color:${s.color.text}">
+          ${s.name} <button class="remove" style="color:${s.color.text}" onclick="profRemoveStudent('${s.id}')">✕</button>
+        </div>`).join('')}
+      </div>
+    </div>
+    <button class="start-btn ${students.length > 0 ? 'ready' : 'disabled'}"
+      onclick="profStartSession()" ${students.length === 0 ? 'disabled' : ''}>
+      Începe sesiunea →
+    </button>
+  </div>`;
+}
+
+function profAddStudent() {
+  const input = document.getElementById('prof-add-student');
+  const name = input.value.trim();
+  if (!name) return;
+  db.ref('session-sanitar/students').once('value', snap => {
+    const existing = snap.val() ? Object.values(snap.val()) : [];
+    if (existing.length >= 20) return;
+    const id = 'stu-' + uid();
+    const color = COLORS[existing.length % COLORS.length];
+    db.ref('session-sanitar/students/' + id).set({ id, name, color });
+    input.value = '';
+    input.focus();
+  });
+}
+
+function profRemoveStudent(id) {
+  db.ref('session-sanitar/students/' + id).remove();
+}
+
+function profStartSession() {
+  const theme = document.getElementById('prof-theme-input')?.value?.trim();
+  if (!theme) { alert('Introduceți o temă!'); return; }
+  db.ref('session-sanitar').update({ theme, phase: 1, startedAt: Date.now() });
+  startLocalTimer(15 * 60, 'prof-timer-container');
+}
+
+// --- MONITOR (Phase 1) ---
+function renderProfMonitor(body, theme, students, cards) {
+  body.innerHTML = `<div class="fade-in">
+    <div class="bs-theme">
+      <div class="label">Tema</div>
+      <div class="text">${theme}</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:8px">
+        Studenții adaugă idei de pe dispozitivele proprii • <strong style="color:var(--accent)">${cards.length}</strong> idei
+      </div>
+    </div>
+    <div class="monitor-stats">
+      ${students.map(s => {
+        const count = cards.filter(c => c.studentId === s.id).length;
+        return `<div class="monitor-stat" style="background:${count > 0 ? s.color.bg : 'rgba(0,0,0,0.03)'};
+          border:2px solid ${count > 0 ? s.color.border : 'var(--border)'};
+          color:${count > 0 ? s.color.text : 'var(--text3)'}">${s.name}: ${count}</div>`;
+      }).join('')}
+    </div>
+    <div class="monitor-grid">
+      ${cards.length === 0 ? '<div style="color:var(--text3);font-size:15px;align-self:center">Se așteaptă ideile studenților...</div>' : ''}
+      ${cards.map(c => `<div class="monitor-card" style="background:${c.color.bg};border-color:${c.color.border}">
+        <div class="card-text" style="color:${c.color.text}">${esc(c.text)}</div>
+        <div class="card-author" style="color:${c.color.text}">${esc(c.studentName)}</div>
+      </div>`).join('')}
+    </div>
+    <button class="next-phase-btn" onclick="profGoToGrouping()" ${cards.length === 0 ? 'disabled' : ''}>
+      Treci la Grupare →
+    </button>
+  </div>`;
+}
+
+function profGoToGrouping() {
+  db.ref('session-sanitar/cards').once('value', snap => {
+    const cards = snap.val() ? Object.values(snap.val()) : [];
+    const ungrouped = { id: 'ungrouped', name: 'Negrupate', cards: cards.map(c => c.id) };
+    db.ref('session-sanitar/groups').set({ ungrouped });
+    db.ref('session-sanitar/phase').set(2);
+    startLocalTimer(25 * 60, 'prof-timer-container');
+  });
+}
+
+// --- GROUPING (Phase 2) ---
+var dragCardId = null, dragSourceGroup = null;
+
+function renderProfGrouping(body, cards, groups) {
+  const sorted = groups.slice().sort((a, b) => a.id === 'ungrouped' ? -1 : 0);
+  body.innerHTML = `<div class="fade-in">
+    <div class="board-toolbar">
+      <div>
+        <h3>Tabla de grupare</h3>
+        <div class="hint">Trageți cardurile în grupuri cu idei similare</div>
+      </div>
+      <button class="toolbar-btn" onclick="profAddGroup()">+ Grup nou</button>
+    </div>
+    <div class="groups-container" id="groups-container">
+      ${sorted.map(g => renderGroupBox(g, cards)).join('')}
+    </div>
+    <button class="next-phase-btn" onclick="profGoToNaming()">Treci la Denumire →</button>
+  </div>`;
+}
+
+function renderGroupBox(group, cards) {
+  const isUngrouped = group.id === 'ungrouped';
+  const groupCards = (group.cards || []).map(cid => cards.find(c => c.id === cid)).filter(Boolean);
+  return `<div class="group-box" id="group-${group.id}"
+    ondragover="event.preventDefault();this.classList.add('drag-over')"
+    ondragleave="this.classList.remove('drag-over')"
+    ondrop="dropCard(event,'${group.id}')">
+    <div class="group-header">
+      ${isUngrouped
+        ? `<span class="ungrouped-label">📥 Negrupate (${groupCards.length})</span>`
+        : `<input class="group-name-input" value="${esc(group.name||'')}"
+            placeholder="Numele grupului..." onchange="profRenameGroup('${group.id}',this.value)">
+          <span class="group-count">(${groupCards.length})</span>
+          <button class="group-delete" onclick="profDeleteGroup('${group.id}')">🗑</button>`
+      }
+    </div>
+    <div class="group-cards">
+      ${groupCards.map(c => `<div class="group-card" draggable="true"
+        style="background:${c.color.bg};border-color:${c.color.border}"
+        ondragstart="startDrag('${c.id}','${group.id}')">
+        <div class="text" style="color:${c.color.text}">${esc(c.text)}</div>
+        <div class="author" style="color:${c.color.text}">${esc(c.studentName)}</div>
+      </div>`).join('')}
+      ${groupCards.length === 0 ? '<div class="group-empty">Trage carduri aici...</div>' : ''}
+    </div>
+  </div>`;
+}
+
+function startDrag(cardId, groupId) { dragCardId = cardId; dragSourceGroup = groupId; }
+
+function dropCard(event, targetGroupId) {
+  event.preventDefault();
+  event.currentTarget.classList.remove('drag-over');
+  if (!dragCardId || dragSourceGroup === targetGroupId) return;
+  db.ref('session-sanitar/groups').once('value', snap => {
+    const groups = snap.val() || {};
+    // Remove from source
+    if (groups[dragSourceGroup] && groups[dragSourceGroup].cards) {
+      groups[dragSourceGroup].cards = groups[dragSourceGroup].cards.filter(id => id !== dragCardId);
+    }
+    // Add to target
+    if (!groups[targetGroupId]) groups[targetGroupId] = { id: targetGroupId, name: '', cards: [] };
+    if (!groups[targetGroupId].cards) groups[targetGroupId].cards = [];
+    groups[targetGroupId].cards.push(dragCardId);
+    db.ref('session-sanitar/groups').set(groups);
+    dragCardId = null; dragSourceGroup = null;
+  });
+}
+
+function profAddGroup() {
+  const id = 'g-' + uid();
+  db.ref('session-sanitar/groups/' + id).set({ id, name: '', cards: [] });
+}
+
+function profRenameGroup(gid, name) {
+  db.ref('session-sanitar/groups/' + gid + '/name').set(name);
+}
+
+function profDeleteGroup(gid) {
+  db.ref('session-sanitar/groups').once('value', snap => {
+    const groups = snap.val() || {};
+    const target = groups[gid];
+    if (!target) return;
+    if (target.cards && target.cards.length > 0) {
+      if (!groups.ungrouped) groups.ungrouped = { id:'ungrouped', name:'Negrupate', cards:[] };
+      if (!groups.ungrouped.cards) groups.ungrouped.cards = [];
+      groups.ungrouped.cards = groups.ungrouped.cards.concat(target.cards);
+    }
+    delete groups[gid];
+    db.ref('session-sanitar/groups').set(groups);
+  });
+}
+
+function profGoToNaming() {
+  db.ref('session-sanitar/phase').set(3);
+  startLocalTimer(15 * 60, 'prof-timer-container');
+}
+
+// --- NAMING (Phase 3) ---
+function renderProfNaming(body, cards, groups) {
+  const named = groups.filter(g => g.id !== 'ungrouped' && (g.cards||[]).length > 0);
+  const ungrouped = groups.find(g => g.id === 'ungrouped');
+  const ungroupedCount = (ungrouped?.cards||[]).length;
+
+  body.innerHTML = `<div class="fade-in">
+    <div class="board-toolbar" style="justify-content:center;text-align:center">
+      <div>
+        <h3>Denumiți categoriile</h3>
+        <div class="hint">Verificați gruparea și dați un titlu descriptiv fiecărui cluster</div>
+      </div>
+    </div>
+    ${named.map((g,i) => {
+      const hue = GROUP_HUES[i % GROUP_HUES.length];
+      const gCards = (g.cards||[]).map(cid => cards.find(c=>c.id===cid)).filter(Boolean);
+      return `<div style="background:linear-gradient(135deg,hsl(${hue},75%,96%),hsl(${hue},55%,93%));
+        border-radius:var(--radius);border:2px solid hsl(${hue},55%,82%);padding:18px;margin-bottom:14px">
+        <input class="group-name-input" value="${esc(g.name||'')}" placeholder="Denumiți categoria..."
+          style="border-color:hsl(${hue},45%,80%);color:hsl(${hue},35%,30%);font-size:16px;margin-bottom:12px;width:100%"
+          onchange="profRenameGroup('${g.id}',this.value)">
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${gCards.map(c => `<span style="padding:5px 10px;border-radius:8px;background:${c.color.bg};
+            border:1px solid ${c.color.border};font-size:12px;color:${c.color.text};font-weight:600">${esc(c.text)}</span>`).join('')}
+        </div>
+      </div>`;
+    }).join('')}
+    ${ungroupedCount > 0 ? `<div class="ungrouped-warning">⚠️ ${ungroupedCount} idei negrupate —
+      <button onclick="db.ref('session-sanitar/phase').set(2)">Înapoi la Grupare</button></div>` : ''}
+    <button class="next-phase-btn" onclick="profGoToResults()">Rezultate finale →</button>
+  </div>`;
+}
+
+function profGoToResults() {
+  db.ref('session-sanitar/phase').set(4);
+  clearInterval(localTimerInterval);
+  document.getElementById('prof-timer-container').innerHTML = '';
+}
+
+// --- RESULTS (Phase 4 - shared) ---
+function renderResults(body, theme, students, cards, groups) {
+  const named = groups.filter(g => g.id !== 'ungrouped' && (g.cards||[]).length > 0);
+
+  body.innerHTML = `<div class="fade-in">
+    <div class="results-header">
+      <h2>Rezultate — Diagrama Afinității</h2>
+      <p>${esc(theme)}</p>
+    </div>
+    <div class="results-stats">
+      <div class="stat-card"><div class="num" style="color:var(--accent)">${cards.length}</div><div class="label">Total idei</div></div>
+      <div class="stat-card"><div class="num" style="color:var(--purple)">${named.length}</div><div class="label">Categorii</div></div>
+      <div class="stat-card"><div class="num" style="color:var(--blue)">${students.length}</div><div class="label">Participanți</div></div>
+    </div>
+    <div class="results-grid">
+      ${named.map((g,i) => {
+        const hue = GROUP_HUES[i % GROUP_HUES.length];
+        const gCards = (g.cards||[]).map(cid => cards.find(c=>c.id===cid)).filter(Boolean);
+        return `<div class="result-group" style="background:linear-gradient(145deg,hsl(${hue},80%,96%),hsl(${hue},60%,92%));
+          border-color:hsl(${hue},55%,82%)">
+          <div class="name" style="color:hsl(${hue},45%,32%)">${esc(g.name) || 'Grup '+(i+1)}</div>
+          <div class="items">
+            ${gCards.map(c => `<div class="result-item" style="background:${c.color.bg};border-color:${c.color.border};color:${c.color.text}">
+              ${esc(c.text)} <span class="auth">— ${esc(c.studentName)}</span>
+            </div>`).join('')}
+          </div>
+          <div class="count" style="color:hsl(${hue},30%,55%)">${gCards.length} idei</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="contributions">
+      <div class="title">Contribuții per participant</div>
+      <div class="contrib-grid">
+        ${students.map(s => {
+          const count = cards.filter(c => c.studentId === s.id).length;
+          const pct = cards.length > 0 ? (count/cards.length)*100 : 0;
+          return `<div class="contrib-item">
+            <div class="contrib-row">
+              <span class="contrib-name" style="background:${s.color.bg};color:${s.color.text}">${esc(s.name)}</span>
+              <span class="contrib-count">${count}</span>
+            </div>
+            <div class="contrib-bar"><div class="contrib-bar-fill" style="width:${pct}%;background:${s.color.border}"></div></div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="action-btns">
+      <button class="primary-btn" onclick="exportReport()">📋 Copiază raportul</button>
+      <button class="secondary-btn" onclick="downloadReport()">💾 Descarcă TXT</button>
+      ${role === 'professor' ? '<button class="secondary-btn" onclick="profNewSession()">↻ Sesiune nouă</button>' : ''}
+    </div>
+  </div>`;
+}
+
+function generateReportText() {
+  return new Promise(resolve => {
+    db.ref('session-sanitar').once('value', snap => {
+      const d = snap.val() || {};
+      const theme = d.theme || '';
+      const students = d.students ? Object.values(d.students) : [];
+      const cards = d.cards ? Object.values(d.cards) : [];
+      const groups = d.groups ? Object.values(d.groups) : [];
+      const named = groups.filter(g => g.id !== 'ungrouped' && (g.cards||[]).length > 0);
+
+      let t = `DIAGRAMA AFINITĂȚII\n${'═'.repeat(50)}\n`;
+      t += `Tema: ${theme}\nData: ${new Date().toLocaleDateString('ro-RO')}\n`;
+      t += `Participanți: ${students.map(s=>s.name).join(', ')}\n${'═'.repeat(50)}\n\n`;
+      named.forEach((g,i) => {
+        t += `${i+1}. ${g.name || 'Grup fără nume'}\n${'-'.repeat(30)}\n`;
+        (g.cards||[]).forEach(cid => {
+          const c = cards.find(x=>x.id===cid);
+          if(c) t += `   • ${c.text} (${c.studentName})\n`;
+        });
+        t += '\n';
+      });
+      t += `${'═'.repeat(50)}\nTotal: ${cards.length} idei | ${named.length} categorii\n`;
+      resolve(t);
+    });
+  });
+}
+
+async function exportReport() {
+  const t = await generateReportText();
+  try { await navigator.clipboard.writeText(t); alert('Raport copiat!'); }
+  catch { alert('Nu s-a putut copia. Folosiți Descarcă TXT.'); }
+}
+
+async function downloadReport() {
+  const t = await generateReportText();
+  const blob = new Blob([t], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `diagrama-afinitati-${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+}
+
+function profNewSession() {
+  if(!confirm('Sigur vrei să ștergi sesiunea curentă?')) return;
+  db.ref('session-sanitar').set({phase:0});
+  clearInterval(localTimerInterval);
+  document.getElementById('prof-timer-container').innerHTML = '';
+}
+
+// ============================================================
+//  STUDENT
+// ============================================================
+function initStudent() {
+  document.getElementById('stu-header-name').textContent = currentStudent.name;
+  db.ref('session-sanitar').on('value', snap => {
+    const data = snap.val() || {};
+    renderStudent(data);
+  });
+}
+
+function renderStudent(data) {
+  const phase = data.phase || 0;
+  const theme = data.theme || '';
+  const cards = data.cards ? Object.values(data.cards) : [];
+  const students = data.students ? Object.values(data.students) : [];
+  const groups = data.groups ? Object.values(data.groups) : [];
+  const myCards = cards.filter(c => c.studentId === currentStudent.id);
+
+  document.getElementById('stu-phase-display').textContent = (PHASES[phase]?.icon||'') + ' ' + (PHASES[phase]?.name||'');
+  renderPhaseBar('stu-phase-bar', phase);
+
+  const body = document.getElementById('stu-body');
+
+  if (phase === 0) {
+    body.innerHTML = `<div class="stu-waiting fade-in">
+      <div class="icon">⏳</div><h2>Așteptăm să înceapă sesiunea</h2>
+      <p>Profesorul va porni brainstorming-ul în curând...</p></div>`;
+  }
+  else if (phase === 1) {
+    renderStudentBrainstorm(body, theme, myCards, cards.length);
+  }
+  else if (phase === 2) {
+    renderStudentGrouping(body, cards, groups);
+  }
+  else if (phase === 3) {
+    body.innerHTML = `<div class="stu-waiting fade-in">
+      <div class="icon">🏷️</div><h2>Se denumesc categoriile</h2>
+      <p>Urmăriți ecranul profesorului pentru discuții.</p></div>`;
+  }
+  else if (phase === 4) {
+    renderResults(body, theme, students, cards, groups);
+  }
+}
+
+function renderStudentBrainstorm(body, theme, myCards, totalCount) {
+  // Keep input value if present
+  const existingInput = document.getElementById('stu-idea-input');
+  const savedValue = existingInput ? existingInput.value : '';
+
+  body.innerHTML = `<div class="fade-in">
+    <div class="bs-theme">
+      <div class="label">Tema</div>
+      <div class="text">${esc(theme)}</div>
+    </div>
+    <div class="bs-input-row">
+      <input class="bs-input" id="stu-idea-input" placeholder="Scrie o idee nouă..."
+        maxlength="140" onkeydown="if(event.key==='Enter')stuAddCard()"
+        style="border-color:${currentStudent.color.border}" value="${esc(savedValue)}">
+      <button class="bs-add-btn" style="background:${currentStudent.color.border}" onclick="stuAddCard()">+</button>
+    </div>
+    <div class="bs-counter">Ai adăugat ${myCards.length} idei • Total: ${totalCount}</div>
+    <div class="bs-cards">
+      ${myCards.slice().reverse().map(c => `<div class="bs-card" style="background:${c.color.bg};border-color:${c.color.border}">
+        <div class="text" style="color:${c.color.text}">${esc(c.text)}</div>
+        <button class="remove" style="color:${c.color.text}" onclick="stuRemoveCard('${c.id}')">✕</button>
+      </div>`).join('')}
+    </div>
+  </div>`;
+
+  // Re-focus input
+  const inp = document.getElementById('stu-idea-input');
+  if (inp && savedValue) { inp.setSelectionRange(savedValue.length, savedValue.length); }
+}
+
+function stuAddCard() {
+  const inp = document.getElementById('stu-idea-input');
+  const text = inp?.value?.trim();
+  if (!text) return;
+  const id = 'c-' + uid();
+  db.ref('session-sanitar/cards/' + id).set({
+    id, text, studentId: currentStudent.id,
+    studentName: currentStudent.name, color: currentStudent.color,
+    createdAt: Date.now()
+  });
+  inp.value = '';
+  inp.focus();
+}
+
+function stuRemoveCard(cid) {
+  db.ref('session-sanitar/cards/' + cid).remove();
+}
+
+// --- STUDENT GROUPING (Phase 2) ---
+function renderStudentGrouping(body, cards, groups) {
+  const sorted = groups.slice().sort((a, b) => a.id === 'ungrouped' ? -1 : 0);
+  body.innerHTML = `<div class="fade-in">
+    <div class="board-toolbar">
+      <div>
+        <h3>Grupare colaborativă</h3>
+        <div class="hint">Trageți cardurile în grupuri cu idei similare. Discutați cu echipa!</div>
+      </div>
+      <button class="toolbar-btn" onclick="stuAddGroup()">+ Grup nou</button>
+    </div>
+    <div class="groups-container">
+      ${sorted.map(g => renderStudentGroupBox(g, cards)).join('')}
+    </div>
+  </div>`;
+}
+
+function renderStudentGroupBox(group, cards) {
+  const isUngrouped = group.id === 'ungrouped';
+  const groupCards = (group.cards || []).map(cid => cards.find(c => c.id === cid)).filter(Boolean);
+  return `<div class="group-box" id="sgroup-${group.id}"
+    ondragover="event.preventDefault();this.classList.add('drag-over')"
+    ondragleave="this.classList.remove('drag-over')"
+    ondrop="stuDropCard(event,'${group.id}')">
+    <div class="group-header">
+      ${isUngrouped
+        ? `<span class="ungrouped-label">📥 Negrupate (${groupCards.length})</span>`
+        : `<input class="group-name-input" value="${esc(group.name||'')}"
+            placeholder="Numele grupului..." onchange="stuRenameGroup('${group.id}',this.value)">
+          <span class="group-count">(${groupCards.length})</span>
+          <button class="group-delete" onclick="stuDeleteGroup('${group.id}')">🗑</button>`
+      }
+    </div>
+    <div class="group-cards">
+      ${groupCards.map(c => `<div class="group-card" draggable="true"
+        style="background:${c.color.bg};border-color:${c.color.border}"
+        ondragstart="startDrag('${c.id}','${group.id}')">
+        <div class="text" style="color:${c.color.text}">${esc(c.text)}</div>
+        <div class="author" style="color:${c.color.text}">${esc(c.studentName)}</div>
+      </div>`).join('')}
+      ${groupCards.length === 0 ? '<div class="group-empty">Trage carduri aici...</div>' : ''}
+    </div>
+  </div>`;
+}
+
+function stuDropCard(event, targetGroupId) {
+  event.preventDefault();
+  event.currentTarget.classList.remove('drag-over');
+  if (!dragCardId || dragSourceGroup === targetGroupId) return;
+  db.ref('session-sanitar/groups').once('value', snap => {
+    const groups = snap.val() || {};
+    if (groups[dragSourceGroup]?.cards) {
+      groups[dragSourceGroup].cards = groups[dragSourceGroup].cards.filter(id => id !== dragCardId);
+    }
+    if (!groups[targetGroupId]) groups[targetGroupId] = { id: targetGroupId, name: '', cards: [] };
+    if (!groups[targetGroupId].cards) groups[targetGroupId].cards = [];
+    groups[targetGroupId].cards.push(dragCardId);
+    db.ref('session-sanitar/groups').set(groups);
+    dragCardId = null; dragSourceGroup = null;
+  });
+}
+
+function stuAddGroup() {
+  const id = 'g-' + uid();
+  db.ref('session-sanitar/groups/' + id).set({ id, name: '', cards: [] });
+}
+
+function stuRenameGroup(gid, name) {
+  db.ref('session-sanitar/groups/' + gid + '/name').set(name);
+}
+
+function stuDeleteGroup(gid) {
+  db.ref('session-sanitar/groups').once('value', snap => {
+    const groups = snap.val() || {};
+    const target = groups[gid];
+    if (!target) return;
+    if (target.cards?.length > 0) {
+      if (!groups.ungrouped) groups.ungrouped = { id:'ungrouped', name:'Negrupate', cards:[] };
+      if (!groups.ungrouped.cards) groups.ungrouped.cards = [];
+      groups.ungrouped.cards = groups.ungrouped.cards.concat(target.cards);
+    }
+    delete groups[gid];
+    db.ref('session-sanitar/groups').set(groups);
+  });
+}
+
+// ============================================================
+//  ESCAPE HTML
+// ============================================================
+function esc(s) {
+  if (!s) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>
